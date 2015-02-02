@@ -1,7 +1,7 @@
 <?php
 class AutoTestSEO extends PHPUnit_Framework_TestCase
 {
-		protected $url = 'http://admin:qwerty6@stand.santehnika-online.ru' ; 
+		protected $url = 'http://santehnika-online.ru' ; 
 		protected $webDriver;
 /**
  * @expectedException Exception
@@ -22,7 +22,7 @@ class AutoTestSEO extends PHPUnit_Framework_TestCase
 	    $SEO=$this->webDriver->get($this->url);
 		echo "\n".'Заходим на сайт и переходим'."\n";
 $a = array(
-           "//a[@title='Раковины']",
+          "//a[@title='Раковины']",
            "//a[@title='Мебель для ванной']",
            "//a[@title='Унитазы']",
 		   "//a[@title='Писсуары']",
@@ -36,7 +36,8 @@ $a = array(
 		   "//a[@title='Водонагреватели']",
 		   "//a[@title='Радиаторы отопления']",
 		   "//a[@title='Обогреватели']",
-		   "//a[@title='Теплые полы']",
+		   "//a[@title='Теплые полы']", 
+		   "//a[@title='Трапы и душевые лотки']",
 		   "//*[@id='sidebar']/aside/div[3]/div/div/div/nav/ul/li[1]/a",
 		   "//a[@href='/discount/ucenka/']"
 		   );
@@ -45,13 +46,14 @@ foreach ($a as $v) {
 	$SEOPage = $this->webDriver->findElement(WebDriverBy::xpath($v))->getText(); 
 	echo "\n Открываем страницу $SEOPage.\n";
 	$SEO = $this->webDriver->findElement(WebDriverBy::xpath($v));
-    $SEO->click();
+        $SEO->click();
 	$CurrURL = $this->webDriver->getCurrentURL();
 	echo $CurrURL;
 	$source = $this->webDriver->getPageSource();
 	try {
 	try {
-	$this->assertContains('<h1>', $source,'Все не ок');
+	$SEO = $this->webDriver->findElement(WebDriverBy::xpath("//*[@id='logo']/div/h1"));
+        $SEO->click();
 	echo "\n.Тег h1 есть.\n";
 	}
 		catch (PHPUnit_Framework_ExpectationFailedException $ex) {
@@ -91,7 +93,8 @@ foreach ($a as $v) {
 	}
 	
 	try {
-	$this->assertContains('h5 class=""', $source,'Все не ок');
+	$SEO = $this->webDriver->findElement(WebDriverBy::xpath("//div[@class='footer_desc']/h5"));
+        $SEO->click();
 	
 	echo "\n.Тег h5 есть.\n";
 	}
@@ -116,12 +119,12 @@ catch (Exception $ex) {
 
     public function seoParentProductShower() {
 	$SEO = $this->webDriver->findElement(WebDriverBy::xpath("//a[@title='Душевые кабины и углы']"));
+	sleep(2);
 	$SEO->click();
 	$b = array(
 	           "//a[@title='Душевые кабины']",
 			   "//a[@title='Душевые боксы']",
-			   "//a[@title='Уголки, ограждения, поддоны']",
-			   "//a[@title='Трапы и душевые лотки']"
+			   "//a[@title='Уголки, ограждения, поддоны']"
 	);
 	foreach ($b as $v) {     
 	$SEOPage = $this->webDriver->findElement(WebDriverBy::xpath($v))->getText(); 
@@ -133,7 +136,8 @@ catch (Exception $ex) {
 	$source = $this->webDriver->getPageSource();
 	try {
 	try {
-	$this->assertContains('<h1>', $source,'Все не ок');
+	$SEO = $this->webDriver->findElement(WebDriverBy::xpath("//*[@id='logo']/div/h1"));
+        $SEO->click();
 	echo "\n.Тег h1 есть.\n";
 	}
 		catch (PHPUnit_Framework_ExpectationFailedException $ex) {
@@ -173,7 +177,8 @@ catch (Exception $ex) {
 	}
 	
 	try {
-	$this->assertContains('h5 class=""', $source,'Все не ок');
+	$SEO = $this->webDriver->findElement(WebDriverBy::xpath("//div[@class='footer_desc']/h5"));
+        $SEO->click();
 	
 	
 	echo "\n.Тег h5 есть.\n";
@@ -198,6 +203,7 @@ catch (Exception $ex) {
 }
 
     public function seoParentProductBath() {
+
 	 $SEO = $this->webDriver->findElement(WebDriverBy::xpath("//a[@title='Ванны']"));
 	 $SEO->click();
 	 $b = array(
@@ -216,14 +222,12 @@ catch (Exception $ex) {
 	$source = $this->webDriver->getPageSource();
 	try {
 	try {
-	$this->assertContains('<h1>', $source,'Все не ок');
+	$SEO = $this->webDriver->findElement(WebDriverBy::xpath("//*[@id='logo']/div/h1"));
+        $SEO->click();
 	echo "\n.Тег h1 есть.\n";
 	}
-		catch (PHPUnit_Framework_ExpectationFailedException $ex) {
+		catch (Exception $ex) {
         echo "\n.'Ошибка. Нет тега h1 на страницах: $SEOPage.\n";
-		
-	//	throw $ex;
-	//	var_dump($ex->getMessage());
 	} 
 	try {
 	$this->assertContains('<h2 class="h3"', $source,'Все не ок');
@@ -256,7 +260,8 @@ catch (Exception $ex) {
 	}
 	
 	try {
-	$this->assertContains('h5 class=""', $source,'Все не ок');
+	$SEO = $this->webDriver->findElement(WebDriverBy::xpath("//div[@class='footer_desc']/h5"));
+        $SEO->click();
 	
 	echo "\n.Тег h5 есть.\n";
 	}
@@ -272,6 +277,7 @@ catch (Exception $ex) {
 		echo "\n Ошибка. Есть тег h6 на страницах: $SEOPage.\n";		
 	//	throw $ex;
 	}
+
 }
 catch (Exception $ex) {
 	
@@ -280,7 +286,7 @@ catch (Exception $ex) {
 	 }
 	
 	public function seoParentPriductHardware() {
-	$SEO = $this->webDriver->findElement(WebDriverBy::xpath("//*[@id='sidebar']/aside/div[1]/div/div/div/nav/ul/li[18]/a"));
+	$SEO = $this->webDriver->findElement(WebDriverBy::xpath("//a[@title='Комплектующие']"));
 	$SEO->click();
 	$b = array(
 	           "//a[@title='для мебели']",
@@ -292,7 +298,7 @@ catch (Exception $ex) {
 			   "//a[@title='для смесителей']",
 			   "//a[@title='для биде']",
 			   "//a[@title='для писсуаров']",
-			   "//a[@title='для теплотехники']",
+			   "//a[@title='для теплотехники']"
 	);
 	foreach ($b as $v) {     
 	$SEOPage = $this->webDriver->findElement(WebDriverBy::xpath($v))->getText(); 
@@ -344,7 +350,8 @@ catch (Exception $ex) {
 	}
 	
 	try {
-	$this->assertContains('h5 class=""', $source,'Все не ок');
+	$SEO = $this->webDriver->findElement(WebDriverBy::xpath("//div[@class='footer_desc']/h5"));
+        $SEO->click();
 	
 	echo "\n.Тег h5 есть.\n";
 	}
